@@ -12,14 +12,8 @@ footer{font-size:13px;color:#94a3b8}
 .hidden{display:none}
 
 /* LOADING */
-#loading{
-  position:fixed;inset:0;background:#020617;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;
-}
-#logo{
-  width:90px;height:90px;border-radius:50%;border:4px solid #22c55e;
-  animation:spin 2s linear infinite;margin-bottom:20px;
-}
+#loading{position:fixed;inset:0;background:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;}
+#logo{width:90px;height:90px;border-radius:50%;border:4px solid #22c55e;animation:spin 2s linear infinite;margin-bottom:20px;}
 @keyframes spin{100%{transform:rotate(360deg)}}
 #lp{margin-bottom:10px}
 #bar{width:80%;max-width:300px;height:10px;background:#1e293b;border-radius:20px;overflow:hidden}
@@ -29,14 +23,10 @@ footer{font-size:13px;color:#94a3b8}
 .container{max-width:750px;margin:auto;padding:15px}
 .card{background:#020617;border-radius:14px;padding:15px;margin-top:15px;animation:fade .4s}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}}
-
-/* FORM */
 input{width:100%;padding:10px;border-radius:10px;border:none;margin-top:10px}
 button{width:100%;padding:12px;border:none;border-radius:12px;background:#22c55e;font-weight:bold;margin-top:15px}
 .option{background:#1e293b;padding:10px;border-radius:10px;margin-top:10px}
 .timer{text-align:center;font-weight:bold;margin-bottom:10px;color:#facc15}
-
-/* S.O.T animation */
 .glow{font-weight:bold;font-size:20px;text-align:center;margin:15px 0;animation:glow 1.5s ease-in-out infinite alternate}
 @keyframes glow{from{text-shadow:0 0 5px #22c55e}to{text-shadow:0 0 20px #22c55e}}
 </style>
@@ -45,7 +35,7 @@ button{width:100%;padding:12px;border:none;border-radius:12px;background:#22c55e
 
 <!-- LOADING -->
 <div id="loading">
-  <img id="logo" src="samuel.jpg">
+  <img id="logo" src="https://via.placeholder.com/200">
   <div id="lp">Loading 1%</div>
   <div id="bar"><div id="fill"></div></div>
 </div>
@@ -111,7 +101,7 @@ if(localStorage.getItem("quizDone")){
   location.reload();
 }
 
-/* ===== 60 QUESTIONS (HARD > SOFT) ===== */
+/* ===== 60 QUESTIONS (hard > soft) ===== */
 const questions=[
 /* HARD 45 */
 {q:"Who prophesied the 70 weeks?",o:["Isaiah","Daniel","Ezekiel"],a:1,w:2},
@@ -124,7 +114,36 @@ const questions=[
 {q:"Who was Paul’s mentor?",o:["Peter","Barnabas","Gamaliel"],a:2,w:2},
 {q:"Which judge made a foolish vow?",o:["Gideon","Jephthah","Samson"],a:1,w:2},
 {q:"Who fell asleep and died during Paul’s sermon?",o:["Eutychus","Timothy","Titus"],a:0,w:2},
-/* … include remaining 35 hard questions from previous array… */
+{q:"Who interpreted Pharaoh's dreams?",o:["Joseph","Daniel","Aaron"],a:0,w:2},
+{q:"Who was thrown into the fiery furnace?",o:["Shadrach, Meshach, Abednego","Daniel","Jonah"],a:0,w:2},
+{q:"Which king built the temple?",o:["Solomon","David","Saul"],a:0,w:2},
+{q:"Who denied Jesus three times?",o:["Peter","John","James"],a:0,w:2},
+{q:"Who led Israel out of Egypt?",o:["Moses","Aaron","Joshua"],a:0,w:2},
+{q:"Who was the first king of Israel?",o:["Saul","David","Solomon"],a:0,w:2},
+{q:"Which prophet was taken up by a chariot of fire?",o:["Elijah","Elisha","Isaiah"],a:0,w:2},
+{q:"Who was swallowed by the lion’s den?",o:["Daniel","Shadrach","Meshach"],a:0,w:2},
+{q:"Who was known for his great strength?",o:["Samson","Gideon","Saul"],a:0,w:2},
+{q:"Who was the mother of Samuel?",o:["Hannah","Abigail","Elizabeth"],a:0,w:2},
+{q:"Which disciple betrayed Jesus?",o:["Peter","Judas","John"],a:1,w:2},
+{q:"Who received the Ten Commandments?",o:["Moses","Joshua","Aaron"],a:0,w:2},
+{q:"Who was the father of John the Baptist?",o:["Zechariah","Joseph","Herod"],a:0,w:2},
+{q:"Which king wrote many psalms?",o:["David","Solomon","Asaph"],a:0,w:2},
+{q:"Who climbed a tree to see Jesus?",o:["Zacchaeus","Matthew","Nicodemus"],a:0,w:2},
+{q:"Who hid the spies in Jericho?",o:["Rahab","Deborah","Esther"],a:0,w:2},
+{q:"Who anointed David as king?",o:["Samuel","Nathan","Elijah"],a:0,w:2},
+{q:"Who killed Goliath?",o:["David","Saul","Jonathan"],a:0,w:2},
+{q:"Who saw the valley of dry bones?",o:["Ezekiel","Jeremiah","Isaiah"],a:0,w:2},
+{q:"Who led Israel across the Jordan?",o:["Joshua","Moses","Caleb"],a:0,w:2},
+{q:"Who wrestled with an angel?",o:["Jacob","Esau","Moses"],a:0,w:2},
+{q:"Who wrote Revelation?",o:["John","Paul","Peter"],a:0,w:2},
+{q:"Who was cast into prison for preaching?",o:["Paul","Peter","Barnabas"],a:0,w:2},
+{q:"Who saw Jesus transfigured?",o:["Peter, James, John","Andrew, Philip","Thomas"],a:0,w:2},
+{q:"Who denied Peter three times?",o:["Peter","Judas","Thomas"],a:0,w:2},
+{q:"Who was known as the weeping prophet?",o:["Jeremiah","Ezekiel","Isaiah"],a:0,w:2},
+{q:"Who led a rebellion against Saul?",o:["Absalom","Jonathan","David"],a:0,w:2},
+{q:"Who had a coat of many colors?",o:["Joseph","Benjamin","David"],a:0,w:2},
+{q:"Who was thrown into the lions’ den?",o:["Daniel","Shadrach","Meshach"],a:0,w:2},
+
 /* SOFT 15 */
 {q:"Who built the ark?",o:["Moses","Noah","Abraham"],a:1,w:1},
 {q:"Jesus was born in?",o:["Nazareth","Bethlehem","Jerusalem"],a:1,w:1},
@@ -135,24 +154,52 @@ const questions=[
 {q:"What is the last book of the Bible?",o:["Jude","Revelation","Acts"],a:1,w:1},
 {q:"Who wrote the book of Revelation?",o:["John","Paul","Peter"],a:0,w:1},
 {q:"Where was Jesus baptized?",o:["Jordan","Red Sea","Nile"],a:0,w:1},
-{q:"Who was the strongest man in the Bible?",o:["Samson","David","Goliath"],a:0,w:1}
+{q:"Who was the strongest man in the Bible?",o:["Samson","David","Goliath"],a:0,w:1},
+{q:"Who was Jesus’ mother?",o:["Mary","Elizabeth","Martha"],a:0,w:1},
+{q:"Who wrote Psalms?",o:["David","Solomon","Asaph"],a:0,w:1},
+{q:"Who received the Ten Commandments?",o:["Moses","Aaron","Joshua"],a:0,w:1},
+{q:"Who betrayed Jesus?",o:["Peter","Judas","John"],a:1,w:1},
+{q:"Which book comes after Psalms?",o:["Proverbs","Job","Ecclesiastes"],a:0,w:1}
 ];
-while(questions.length<60){
-  questions.push({q:"Which book comes after Psalms?",o:["Proverbs","Job","Ecclesiastes"],a:0,w:1});
-}
 
 /* ===== QUIZ LOGIC ===== */
 let idx=0,score=0,timeSec=1200,timerInt,quizActive=false,cheatDetected=false;
 
-function startQuiz(){
+window.startQuiz=function(){
   if(!name.value||!gender.value||!dept.value||!photo.files.length){
     alert("Fill all fields");return;
   }
-  formBox.classList.add("hidden");
-  quizBox.classList.remove("hidden");
-  quizActive=true;
-  startTimer();
-  showQuestion();
+
+  // Resize photo if too big
+  resizePhoto(photo.files[0], 1024, 1024, (resizedBlob)=>{
+    photo._resized = resizedBlob; // attach resized blob to input
+    formBox.classList.add("hidden");
+    quizBox.classList.remove("hidden");
+    quizActive=true;
+    startTimer();
+    showQuestion();
+  });
+}
+
+/* PHOTO RESIZE FUNCTION */
+function resizePhoto(file,maxWidth,maxHeight,callback){
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      let w = img.width;
+      let h = img.height;
+      const ratio = Math.min(maxWidth/w, maxHeight/h, 1);
+      w = w*ratio; h = h*ratio;
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img,0,0,w,h);
+      canvas.toBlob(callback,"image/jpeg",0.8);
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
 }
 
 /* TIMER */
@@ -195,8 +242,8 @@ function submit(){
   quizBox.classList.add("hidden");
   doneBox.classList.remove("hidden");
 
-  let fd=new FormData();
-  fd.append("photo",photo.files[0]);
+  const fd = new FormData();
+  fd.append("photo", photo._resized || photo.files[0]);
   fd.append("caption",
 `📖 Bible Quiz
 👤 ${name.value}
@@ -214,7 +261,6 @@ document.addEventListener("visibilitychange",()=>{
     alert("⚠️ You switched tabs. Score may be reduced by 2 points.");
     score=Math.max(score-2,0);
   }
-});
 });
 </script>
 </body>
