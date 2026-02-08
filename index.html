@@ -130,9 +130,9 @@ footer{background:#020617; padding:30px; text-align:center; color:#64748b; font-
     <button class="btn" onclick="openForm()">START CHALLENGE</button>
   </section>
   <div class="gallery">
-    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4">
-    <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67ddaf">
-    <img src="https://images.unsplash.com/photo-1590608897129-79da98d15969">
+    <img src="radio1.jpg">
+    <img src="radio2.jpg">
+    <img src="radio3.jpg">
   </div>
 </div>
 
@@ -161,11 +161,11 @@ footer{background:#020617; padding:30px; text-align:center; color:#64748b; font-
 
 <section id="result" style="display:none; text-align:center; padding:100px 20px;">
   <div class="header-logo-wrap" style="width:80px; height:80px; margin: 0 auto 20px;"><img src="logo.png"></div>
-  <h2 id="resTitle" style="color: var(--gold);">Submitting Result...</h2>
-  <p id="resMsg" style="color: #94a3b8; margin-top: 10px;">Please wait, sending to database.</p>
+  <h2 id="resTitle" style="color: var(--gold);">Submitting...</h2>
+  <p id="resMsg" style="color: #94a3b8; margin-top: 10px;">Connecting to secure server.</p>
 </section>
 
-<footer>© 2026 S.O.T Multimedia Concept</footer>
+<footer>© 2026 S.O.T Multimedia Concept| Design by MIGHTYBEN</footer>
 
 <script>
 // --- LOADING ---
@@ -290,28 +290,63 @@ function next(){
 }
 
 function finish(){
-  active=false;
-  document.getElementById("quiz").style.display="none";
-  document.getElementById("result").style.display="block";
+  active = false;
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("result").style.display = "block";
   
-  const per = Math.round((score/120)*100);
-  const msg = `📌 *QUIZ SUBMISSION*\n👤 Name: ${document.getElementById("fullName").value}\n🏆 Score: ${score}/120 (${per}%)\n🚫 Cheated: ${cheated?'YES':'NO'}`;
+  const name = document.getElementById("fullName").value;
+  const phone = document.getElementById("phoneNumber").value;
+  const gender = document.getElementById("genderSelect").value;
+  const maxScore = 120; 
+  const per = Math.round((score / maxScore) * 100);
 
-  fetch(`https://api.telegram.org/bot8526007970:AAGwLxlOsBB1DEPSfNPGmelX77_I2zfJHSI/sendMessage`,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({chat_id:879873737, text:msg, parse_mode:"Markdown"})
+  const msg = `📖 *S.O.T QUIZ SUBMISSION*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n⚥ *Gender:* ${gender}\n🏆 *Score:* ${score}/${maxScore}\n📊 *Percentage:* ${per}%\n🚫 *Cheated:* ${cheated ? 'YES' : 'NO'}`;
+
+  const botToken = "8526007970:AAGwLxlOsBB1DEPSfNPGmelX77_I2zfJHSI";
+  const chatId = "874563737";
+
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: "Markdown" })
   })
-  .then(()=>{
+  .then(res => {
+    if(!res.ok) throw new Error("API Error");
+    return res.json();
+  })
+  .then(() => {
     document.getElementById("resTitle").textContent = "Submission Successful!";
-    document.getElementById("resMsg").textContent = "Thank you for participating. Redirecting you home in 5 seconds...";
-    // REDIRECT TO MAIN PAGE
+    document.getElementById("resMsg").textContent = "Success! Redirecting you home in 5 seconds...";
     setTimeout(() => { window.location.reload(); }, 5000);
   })
-  .catch(()=> alert("Error sending results."));
+  .catch(() => {
+    document.getElementById("resTitle").textContent = "Submission Error";
+    document.getElementById("resMsg").textContent = "Check your internet and try again. Or screenshot your score.";
+    const rBtn = document.createElement("button");
+    rBtn.className = "btn"; rBtn.textContent = "Retry"; rBtn.style.marginTop = "20px";
+    rBtn.onclick = () => finish();
+    document.getElementById("result").appendChild(rBtn);
+  });
 }
 
 document.addEventListener("visibilitychange",()=>{ if(active && document.hidden && !cheated){ cheated=true; score=Math.max(0, score-10); alert("Cheating detected! 10 pts deducted."); }});
+
+  // Disable Right-Click
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// Disable specific keyboard shortcuts
+document.onkeydown = function(e) {
+  if (e.keyCode == 123) { // F12
+    return false;
+  }
+  if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+    return false;
+  }
+  if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+    return false;
+  }
+};
+
 </script>
 </body>
 </html>
