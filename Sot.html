@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Telegram Test</h2>
+<input id="photo" type="file">
+<input id="name" placeholder="Full Name">
+<input id="phone" placeholder="Phone Number">
+<button onclick="sendTest()">Send Test</button>
+
+<script>
+function sendTest() {
+  const photo = document.getElementById('photo').files[0];
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+
+  if(!photo || !name || !phone){ alert("Fill all fields"); return; }
+
+  const fd = new FormData();
+  fd.append("photo", photo);
+  fd.append("caption", `Test Submission\nName: ${name}\nPhone: ${phone}\nScore: 99`);
+
+  fetch("/api/send", { method: "POST", body: fd })
+    .then(res=>res.json())
+    .then(data=>console.log("Telegram response:", data))
+    .catch(err=>console.error(err));
+}
+</script>
+</body>
+</html>
