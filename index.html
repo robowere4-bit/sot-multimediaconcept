@@ -3,223 +3,315 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>S.O.T Bible Quiz</title>
+<title>S.O.T Bible Quiz - 60 Questions</title>
 <style>
 :root{
   --orange:#ff7a18;
   --gold:#ffb347;
   --dark:#020617;
+  --glass: rgba(255, 255, 255, 0.1);
 }
-*{box-sizing:border-box;font-family:system-ui,sans-serif;margin:0;padding:0}
+*{box-sizing:border-box;font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;margin:0;padding:0}
 body{background:#0f172a;color:#fff;overflow-x:hidden}
 
-/* LOADING */
-#loading{position:fixed;inset:0;background:#020617;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
-#loadLogo{width:90px;height:90px;border-radius:50%;border:5px solid var(--orange);animation:spin 2s linear infinite;margin-bottom:12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-#loadText{margin-bottom:10px;font-weight:bold}
-#bar{width:260px;height:12px;background:#1f2937;border-radius:20px;overflow:hidden}
-#fill{height:100%;width:1%;background:linear-gradient(90deg,var(--orange),var(--gold))}
+/* --- STYLISH LOADING SCREEN --- */
+#loading{position:fixed;inset:0;background:radial-gradient(circle at center, #1e293b, #020617);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition: opacity 0.5s;}
 
-/* HEADER */
-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:#020617}
-header h1{animation:blink 1.3s infinite}
-@keyframes blink{50%{opacity:.4}}
-header img{width:45px;height:45px;border-radius:50%}
-
-/* HERO */
-.hero{text-align:center;padding:25px}
-.hero h2{color:var(--gold);margin-bottom:10px}
-.hero p{line-height:1.8;color:#d1d5db;margin-bottom:20px}
-.btn{
-  background:linear-gradient(90deg,var(--orange),var(--gold));
-  border:none;padding:14px 26px;border-radius:30px;font-weight:bold;cursor:pointer;
-  box-shadow:0 0 25px rgba(255,122,24,.6);
+.load-logo-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 25px;
 }
 
-/* MODAL FORM */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center}
-.card{background:#020617;padding:22px;border-radius:16px;width:95%;max-width:520px;margin:auto}
-input,select{width:100%;padding:12px;margin-top:10px;border-radius:10px;border:none}
+#loadLogo{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid transparent;
+  background: linear-gradient(#020617, #020617) padding-box, 
+              linear-gradient(135deg, var(--orange), var(--gold)) border-box;
+  box-shadow: 0 0 30px rgba(255, 122, 24, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
 
-/* QUIZ */
-#quiz{display:none;padding:20px}
-.option{background:#1f2937;padding:12px;border-radius:10px;margin-top:10px;cursor:pointer}
-.option:hover{background:#374151}
-.progress{height:10px;background:#1f2937;border-radius:10px;overflow:hidden;margin:15px 0}
-.progress div{height:100%;width:0;background:var(--gold)}
-.timer{text-align:center;font-weight:bold;color:#facc15;margin-bottom:10px}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 122, 24, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 122, 24, 0.7); }
+  100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 122, 24, 0.4); }
+}
 
-/* RESULT */
-#result{display:none;text-align:center;padding:20px}
+#loadText{margin-bottom:15px; font-weight:600; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; font-size: 0.8rem;}
 
-/* GALLERY */
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:20px 0}
-.gallery img{width:100%;border-radius:14px}
+#bar{width:280px;height:10px;background:rgba(255,255,255,0.05);border-radius:20px;overflow:hidden; border: 1px solid rgba(255,255,255,0.1);}
+#fill{height:100%;width:0%;background:linear-gradient(90deg, var(--orange), var(--gold)); box-shadow: 0 0 15px var(--orange); transition: width 0.2s;}
 
-/* FOOTER */
-footer{background:#020617;padding:15px;text-align:center;color:#9ca3af;font-size:13px}
+/* --- STYLISH HEADER --- */
+header{
+  display:flex; justify-content:space-between; align-items:center; 
+  padding: 12px 25px; background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);
+  position: sticky; top: 0; z-index: 100;
+}
+
+header h1{
+  font-size: 1rem; font-weight: 800; letter-spacing: 1px;
+  background: linear-gradient(to right, #fff, var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.header-logo-wrap {
+  width: 50px; height: 50px; border-radius: 50%;
+  padding: 2px; background: linear-gradient(45deg, var(--orange), var(--gold));
+}
+
+header img{
+  width:100%; height:100%; border-radius:50%; object-fit: cover; border: 2px solid #020617;
+}
+
+/* --- HERO & UI --- */
+.hero{text-align:center;padding:50px 20px;}
+.hero h2{color:var(--gold); font-size: 2rem; margin-bottom:15px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+
+.btn{
+  background: linear-gradient(135deg, var(--orange), var(--gold));
+  border:none; padding:16px 35px; border-radius:50px; font-weight:bold; cursor:pointer;
+  color:white; box-shadow: 0 10px 20px rgba(255, 122, 24, 0.3);
+  transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+}
+.btn:hover{ transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 122, 24, 0.5); }
+
+/* --- MODAL --- */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.8); backdrop-filter: blur(8px); display:none; justify-content:center; align-items:center; z-index:1000}
+.card{background:#0f172a; padding:30px; border-radius:24px; width:90%; max-width:400px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.5);}
+
+input,select{width:100%; padding:14px; margin-top:15px; border-radius:12px; border:1px solid #334155; background:#1e293b; color:white; outline: none;}
+input:focus{border-color: var(--orange);}
+
+/* --- QUIZ AREA --- */
+#quiz{display:none; padding:30px 20px; max-width:600px; margin:auto;}
+.option{
+    background: rgba(255,255,255,0.03); padding:18px; border-radius:15px; 
+    margin-top:12px; cursor:pointer; border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.2s; font-size: 1.05rem;
+}
+.option:hover{ background: rgba(255,255,255,0.08); transform: translateX(5px); }
+.option.selected{ border-color: var(--gold); background: rgba(255, 179, 71, 0.15); box-shadow: 0 0 15px rgba(255, 179, 71, 0.2); }
+
+.timer{text-align:center; font-weight:800; color:var(--gold); font-size:1.8rem; margin-bottom:20px;}
+.progress{height:10px; background:rgba(255,255,255,0.05); border-radius:20px; margin-bottom:30px;}
+#progFill{height: 100%; width: 0%; background: var(--gold); border-radius: 20px; transition: 0.3s;}
+
+/* --- GALLERY --- */
+.gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:40px 20px;}
+.gallery img{width:100%; border-radius:20px; height:200px; object-fit:cover; border: 1px solid rgba(255,255,255,0.1);}
+
+footer{background:#020617; padding:30px; text-align:center; color:#64748b; font-size:13px; border-top: 1px solid rgba(255,255,255,0.05);}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
 <div id="loading">
-  <img id="loadLogo" src="samuel.jpg">
-  <div id="loadText">Loading 1%</div>
+  <div class="load-logo-container"><img id="loadLogo" src="samuel.jpg"></div>
+  <div id="loadText">Loading...</div>
   <div id="bar"><div id="fill"></div></div>
 </div>
 
 <header>
-  <h1>S.O.T Multimedia Concept</h1>
-  <img src="logo.png">
+  <h1>S.O.T MULTIMEDIA</h1>
+  <div class="header-logo-wrap"><img src="logo.png"></div>
 </header>
 
-<section class="hero">
-  <h2>Bible Knowledge Challenge</h2>
-  <p>S.O.T Multimedia Concept is a faith-based media ministry. Test your Bible knowledge and join our radio vision!</p>
-  <button class="btn" onclick="openForm()">Start Quiz</button>
-</section>
-
-<section>
-  <h2>📻 Radio Studio Gallery</h2>
+<div id="main-content">
+  <section class="hero">
+    <h2>Bible Knowledge Challenge</h2>
+    <p style="margin:15px 0; color:#94a3b8;">Test your knowledge of the Word with 60 questions.</p>
+    <button class="btn" onclick="openForm()">START CHALLENGE</button>
+  </section>
   <div class="gallery">
     <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4">
     <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67ddaf">
     <img src="https://images.unsplash.com/photo-1590608897129-79da98d15969">
   </div>
-</section>
+</div>
 
-<!-- MODAL FORM -->
 <div class="modal" id="formModal">
   <div class="card">
-    <h3>Participant Registration</h3>
+    <h3 style="text-align: center; color: var(--gold);">Participant Profile</h3>
     <input id="fullName" placeholder="Full Name">
-    <input id="phoneNumber" placeholder="Phone Number">
+    <input id="phoneNumber" placeholder="WhatsApp Number" type="tel">
     <select id="genderSelect">
       <option value="">Select Gender</option>
       <option>Male</option>
       <option>Female</option>
     </select>
-    <button class="btn" type="button" onclick="startQuiz()">Proceed</button>
+    <button class="btn" style="width:100%; margin-top:25px" onclick="startQuiz()">BEGIN QUIZ</button>
   </div>
 </div>
 
-<!-- QUIZ -->
 <section id="quiz">
-  <div class="timer" id="timer">Time: 30:00</div>
+  <div class="timer" id="timer">30:00</div>
   <div class="progress"><div id="progFill"></div></div>
-  <h3 id="qText"></h3>
+  <p id="qCounter" style="color:var(--gold); font-size:0.8rem; font-weight: bold;"></p>
+  <h3 id="qText" style="margin:15px 0 25px;"></h3>
   <div id="options"></div>
-  <button class="btn" onclick="next()">Next</button>
+  <button class="btn" style="width:100%; margin-top:40px" onclick="next()">SUBMIT ANSWER</button>
 </section>
 
-<!-- RESULT -->
-<section id="result">
-  <h2>Thank You</h2>
-  <p>We will get back to you as soon as our database calculates your result. Please come back next Sunday.</p>
+<section id="result" style="display:none; text-align:center; padding:100px 20px;">
+  <div class="header-logo-wrap" style="width:80px; height:80px; margin: 0 auto 20px;"><img src="logo.png"></div>
+  <h2 id="resTitle" style="color: var(--gold);">Submitting Result...</h2>
+  <p id="resMsg" style="color: #94a3b8; margin-top: 10px;">Please wait, sending to database.</p>
 </section>
 
 <footer>© 2026 S.O.T Multimedia Concept</footer>
 
 <script>
-// ===== LOADING =====
-let lp=1;
-const loadLogo=document.getElementById("loadLogo");
-const loadText=document.getElementById("loadText");
-const fill=document.getElementById("fill");
-const loading=document.getElementById("loading");
+// --- LOADING ---
+let lp=0;
+const fill = document.getElementById("fill");
 const loadInt=setInterval(()=>{
-  lp++; fill.style.width=lp+"%"; loadText.textContent="Loading "+lp+"%";
-  if(lp>=100){clearInterval(loadInt);loading.style.display="none";}
-},25);
+  lp += 2; if(lp > 100) lp = 100;
+  fill.style.width=lp+"%";
+  document.getElementById("loadText").textContent="Loading Wisdom "+lp+"%";
+  if(lp>=100){
+      clearInterval(loadInt); 
+      document.getElementById("loading").style.opacity="0";
+      setTimeout(() => { document.getElementById("loading").style.display="none"; }, 500);
+  }
+},30);
 
-// ===== QUESTIONS 60 =====
-const questions=[
-{q:"Who interpreted Pharaoh’s dreams?",o:["Daniel","Joseph","Moses","Aaron"],a:1,w:2},
-{q:"Which prophet saw the valley of dry bones?",o:["Isaiah","Ezekiel","Jeremiah","Daniel"],a:1,w:2},
-{q:"Who was Paul’s teacher?",o:["Peter","Barnabas","Gamaliel","Timothy"],a:2,w:2},
-{q:"Which king saw handwriting on the wall?",o:["Nebuchadnezzar","Belshazzar","Darius","Cyrus"],a:1,w:2},
-// Add remaining 56 questions here...
+// --- 60 QUESTIONS ---
+const questions = [
+  {q:"Who was the first man created?", o:["Noah","Adam","Cain","Abel"], a:1, w:2},
+  {q:"How many days did God take to create the world?", o:["6","7","5","10"], a:0, w:2},
+  {q:"Who built the ark?", o:["Moses","Noah","Abraham","Isaac"], a:1, w:2},
+  {q:"Which sea did the Israelites cross to escape Egypt?", o:["Dead Sea","Red Sea","Mediterranean","Galilee"], a:1, w:2},
+  {q:"How many commandments were given to Moses?", o:["5","12","10","7"], a:2, w:2},
+  {q:"Who was thrown into the lions' den?", o:["David","Daniel","Joseph","Samuel"], a:1, w:2},
+  {q:"Who killed Goliath?", o:["Saul","Solomon","David","Samson"], a:2, w:2},
+  {q:"What is the shortest verse in the Bible?", o:["God is love","Jesus wept","Pray always","In the beginning"], a:1, w:2},
+  {q:"Who was the mother of Jesus?", o:["Martha","Mary","Elizabeth","Ruth"], a:1, w:2},
+  {q:"Which book comes first in the New Testament?", o:["Mark","Luke","John","Matthew"], a:3, w:2},
+  {q:"Who was swallowed by a great fish?", o:["Jonah","Peter","Paul","Elijah"], a:0, w:2},
+  {q:"What was the first plague in Egypt?", o:["Frogs","Lice","Water to blood","Darkness"], a:2, w:2},
+  {q:"Who was known as the 'weeping prophet'?", o:["Isaiah","Ezekiel","Jeremiah","Hosea"], a:2, w:2},
+  {q:"In what city was Jesus born?", o:["Jerusalem","Nazareth","Bethlehem","Jericho"], a:2, w:2},
+  {q:"How many disciples did Jesus have?", o:["10","12","7","40"], a:1, w:2},
+  {q:"What was Matthew's profession before following Jesus?", o:["Fisherman","Tax Collector","Carpenter","Doctor"], a:1, w:2},
+  {q:"Who betrayed Jesus for 30 pieces of silver?", o:["Peter","James","Judas Iscariot","Thomas"], a:2, w:2},
+  {q:"Which disciple denied Jesus three times?", o:["Andrew","Peter","John","Philip"], a:1, w:2},
+  {q:"What is the last book of the Bible?", o:["Jude","Hebrews","Revelation","Acts"], a:2, w:2},
+  {q:"Who was the strongest man in the Bible?", o:["Gideon","Samson","David","Joshua"], a:1, w:2},
+  {q:"Who led the Israelites after Moses died?", o:["Caleb","Joshua","Aaron","Eleazar"], a:1, w:2},
+  {q:"Which king built the first Temple in Jerusalem?", o:["David","Saul","Solomon","Hezekiah"], a:2, w:2},
+  {q:"What was the sign of God's promise to Noah?", o:["A star","A rainbow","A pillar of fire","A dove"], a:1, w:2},
+  {q:"Who was the oldest man in the Bible?", o:["Adam","Methuselah","Enoch","Noah"], a:1, w:2},
+  {q:"How many books are in the Bible?", o:["55","66","72","40"], a:1, w:2},
+  {q:"What did God use to create Eve?", o:["Dust","A rib","A stone","Water"], a:1, w:2},
+  {q:"Who was the first king of Israel?", o:["David","Saul","Solomon","Samuel"], a:1, w:2},
+  {q:"Who wrote the most books in the New Testament?", o:["Peter","John","Paul","Luke"], a:2, w:2},
+  {q:"What was the name of the mountain where Moses received the 10 Commandments?", o:["Mt. Ararat","Mt. Nebo","Mt. Sinai","Mt. Olives"], a:2, w:2},
+  {q:"Who was Abraham's wife?", o:["Sarah","Rebekah","Rachel","Leah"], a:0, w:2},
+  {q:"Which bird did Noah first send out of the ark?", o:["Dove","Raven","Sparrow","Eagle"], a:1, w:2},
+  {q:"Who was the brother of Cain?", o:["Seth","Abel","Enoch","Lamech"], a:1, w:2},
+  {q:"Which gospel was written by a doctor?", o:["Matthew","Mark","Luke","John"], a:2, w:2},
+  {q:"Who was raised from the dead by Jesus?", o:["Lazarus","Timothy","Stephen","Silas"], a:0, w:2},
+  {q:"What instrument did David play?", o:["Flute","Harp","Trumpet","Drums"], a:1, w:2},
+  {q:"Who was the wife of Isaac?", o:["Sarah","Rebekah","Rachel","Ruth"], a:1, w:2},
+  {q:"Who was the father of the 12 tribes of Israel?", o:["Abraham","Isaac","Jacob","Joseph"], a:2, w:2},
+  {q:"What did the Israelites eat in the wilderness?", o:["Bread and Fish","Manna and Quail","Honey and Locusts","Figs"], a:1, w:2},
+  {q:"Who was the first Christian martyr?", o:["Paul","Peter","Stephen","James"], a:2, w:2},
+  {q:"On what day did Jesus rise from the dead?", o:["Second","Third","Seventh","First"], a:1, w:2},
+  {q:"What was Saul's name changed to?", o:["Simon","Paul","Silas","Barnabas"], a:1, w:2},
+  {q:"Which book contains 'The Lord is my Shepherd'?", o:["Proverbs","Psalms","Ecclesiastes","Isaiah"], a:1, w:2},
+  {q:"Who was the cousin of Jesus that baptized Him?", o:["John the Apostle","John the Baptist","James","Andrew"], a:1, w:2},
+  {q:"What did Jesus turn water into at Cana?", o:["Juice","Milk","Wine","Oil"], a:2, w:2},
+  {q:"Who was the woman judge of Israel?", o:["Ruth","Esther","Deborah","Jael"], a:2, w:2},
+  {q:"Which queen saved her people from destruction?", o:["Jezebel","Esther","Sheba","Athaliah"], a:1, w:2},
+  {q:"What was the city with walls that fell?", o:["Jerusalem","Jericho","Babylon","Nineveh"], a:1, w:2},
+  {q:"Who was Joseph's younger brother?", o:["Reuben","Simeon","Benjamin","Levi"], a:2, w:2},
+  {q:"What were the names of the three Hebrew boys in the fire?", o:["Peter, James, John","Cain, Abel, Seth","Shadrach, Meshach, Abednego","Paul, Silas, Timothy"], a:2, w:2},
+  {q:"Who was the prophet that rode a chariot of fire to heaven?", o:["Elisha","Elijah","Isaiah","Malachi"], a:1, w:2},
+  {q:"What is the first book of the Bible?", o:["Exodus","Leviticus","Genesis","Numbers"], a:2, w:2},
+  {q:"What gift did the wise men NOT bring to Jesus?", o:["Gold","Silver","Frankincense","Myrrh"], a:1, w:2},
+  {q:"Who was the high priest who presided over Jesus' trial?", o:["Annas","Caiaphas","Pilate","Herod"], a:1, w:2},
+  {q:"How many people were on the ark?", o:["2","10","8","12"], a:2, w:2},
+  {q:"Who was known as the 'Dreamer'?", o:["Daniel","Joseph","Pharaoh","Jacob"], a:1, w:2},
+  {q:"What was the language of the New Testament?", o:["Hebrew","Latin","Greek","Aramaic"], a:2, w:2},
+  {q:"Who wrote the book of Revelation?", o:["Paul","John","Peter","Jude"], a:1, w:2},
+  {q:"Which commandment says 'Honor thy father and thy mother'?", o:["3rd","5th","1st","10th"], a:1, w:2},
+  {q:"Who was Moses' sister?", o:["Miriam","Ruth","Naomi","Zipporah"], a:0, w:2},
+  {q:"How many times did Joshua's army march around Jericho on the last day?", o:["1","3","7","12"], a:2, w:2}
 ];
 
-// ===== QUIZ LOGIC =====
-let i=0,score=0,time=1800,active=false,picked=null,cheated=false;
-const quiz=document.getElementById("quiz");
-const result=document.getElementById("result");
+let idx=0, score=0, time=1800, active=false, picked=null, cheated=false;
 
 function openForm(){document.getElementById("formModal").style.display="flex"}
 
 function startQuiz(){
-  const name=document.getElementById("fullName").value;
-  const phone=document.getElementById("phoneNumber").value;
-  const gender=document.getElementById("genderSelect").value;
-  if(!name||!phone||!gender){alert("Fill all fields");return;}
+  if(!document.getElementById("fullName").value || !document.getElementById("phoneNumber").value || !document.getElementById("genderSelect").value){alert("Please fill all fields!"); return;}
   document.getElementById("formModal").style.display="none";
-  quiz.style.display="block"; active=true;
-  startTimer(); showQ();
+  document.getElementById("main-content").style.display="none";
+  document.getElementById("quiz").style.display="block";
+  active=true; runTimer(); loadQ();
 }
 
-function startTimer(){
-  const timerEl=document.getElementById("timer");
-  const interval=setInterval(()=>{
+function runTimer(){
+  const tEl=document.getElementById("timer");
+  const timer = setInterval(()=>{
+    if(!active){clearInterval(timer); return;}
     time--;
-    timerEl.textContent="Time left: "+Math.floor(time/60)+":"+String(time%60).padStart(2,"0");
-    if(time<=0){clearInterval(interval);finish();}
+    let m=Math.floor(time/60), s=time%60;
+    tEl.textContent=`${m}:${s<10?'0':''}${s}`;
+    if(time<=0){clearInterval(timer); finish();}
   },1000);
 }
 
-function showQ(){
-  const q=questions[i];
-  document.getElementById("qText").textContent=(i+1)+". "+q.q;
-  const opts=document.getElementById("options"); opts.innerHTML="";
-  q.o.forEach((t,idx)=>{
-    opts.innerHTML+=`<div class="option" onclick="picked=${idx}">${t}</div>`;
+function loadQ(){
+  const q = questions[idx];
+  document.getElementById("qCounter").textContent = `QUESTION ${idx+1} OF 60`;
+  document.getElementById("qText").textContent = q.q;
+  const oBox = document.getElementById("options"); oBox.innerHTML = "";
+  q.o.forEach((opt, i) => {
+    const d = document.createElement("div"); d.className = "option"; d.textContent = opt;
+    d.onclick = () => { document.querySelectorAll(".option").forEach(el=>el.classList.remove("selected")); d.classList.add("selected"); picked = i; };
+    oBox.appendChild(d);
   });
-  document.getElementById("progFill").style.width=((i/questions.length)*100)+"%";
+  document.getElementById("progFill").style.width = ((idx/60)*100)+"%";
 }
 
 function next(){
-  if(picked===null){alert("Select an answer");return;}
-  if(picked===questions[i].a) score+=questions[i].w;
-  picked=null;i++;
-  i>=questions.length?finish():showQ();
+  if(picked===null){alert("Select an answer!"); return;}
+  if(picked===questions[idx].a) score += questions[idx].w;
+  picked=null; idx++;
+  idx < questions.length ? loadQ() : finish();
 }
 
 function finish(){
-  active=false; quiz.style.display="none"; result.style.display="block";
-  const max=questions.reduce((t,q)=>t+q.w,0);
-  const percent=Math.round((score/max)*100);
-  const name=document.getElementById("fullName").value;
-  const phone=document.getElementById("phoneNumber").value;
-  const gender=document.getElementById("genderSelect").value;
-
-  // ===== SEND TO TELEGRAM =====
-  const msg=`📖 Bible Quiz Submission
-👤 Name: ${name}
-📞 Phone: ${phone}
-⚥ Gender: ${gender}
-🏆 Score: ${score}
-📊 Percentage: ${percent}%`;
+  active=false;
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("result").style.display="block";
+  
+  const per = Math.round((score/120)*100);
+  const msg = `📌 *QUIZ SUBMISSION*\n👤 Name: ${document.getElementById("fullName").value}\n🏆 Score: ${score}/120 (${per}%)\n🚫 Cheated: ${cheated?'YES':'NO'}`;
 
   fetch(`https://api.telegram.org/bot8526007970:AAGwLxlOsBB1DEPSfNPGmelX77_I2zfJHSI/sendMessage`,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({chat_id:874563737,text:msg})
+    body:JSON.stringify({chat_id:879873737, text:msg, parse_mode:"Markdown"})
   })
-  .then(res=>res.json())
-  .then(d=>console.log("Telegram:",d))
-  .catch(err=>console.error(err));
+  .then(()=>{
+    document.getElementById("resTitle").textContent = "Submission Successful!";
+    document.getElementById("resMsg").textContent = "Thank you for participating. Redirecting you home in 5 seconds...";
+    // REDIRECT TO MAIN PAGE
+    setTimeout(() => { window.location.reload(); }, 5000);
+  })
+  .catch(()=> alert("Error sending results."));
 }
 
-// ===== ANTI-CHEAT =====
-document.addEventListener("visibilitychange",()=>{
-  if(active && document.hidden && !cheated){
-    cheated=true;
-    score=Math.max(score-2,0);
-    alert("Tab switch detected! 2 points penalty applied.");
-  }
-});
+document.addEventListener("visibilitychange",()=>{ if(active && document.hidden && !cheated){ cheated=true; score=Math.max(0, score-10); alert("Cheating detected! 10 pts deducted."); }});
 </script>
 </body>
 </html>
