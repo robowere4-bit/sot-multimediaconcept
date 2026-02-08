@@ -82,7 +82,23 @@ button{width:100%;padding:12px;border:none;border-radius:12px;background:#22c55e
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
 
-/* ===== LOADING BAR ===== */
+// DOM Elements
+const lp = document.getElementById("lp");
+const fill = document.getElementById("fill");
+const loading = document.getElementById("loading");
+const app = document.getElementById("app");
+const formBox = document.getElementById("formBox");
+const quizBox = document.getElementById("quizBox");
+const doneBox = document.getElementById("doneBox");
+const photo = document.getElementById("photo");
+const name = document.getElementById("name");
+const gender = document.getElementById("gender");
+const dept = document.getElementById("dept");
+const qText = document.getElementById("qText");
+const opts = document.getElementById("opts");
+const timer = document.getElementById("timer");
+
+// ===== LOADING BAR =====
 let percent=1;
 let loadInt=setInterval(()=>{
   percent++;
@@ -95,15 +111,14 @@ let loadInt=setInterval(()=>{
   }
 },30);
 
-/* ===== LOCK RETAKE ===== */
+// ===== LOCK RETAKE =====
 if(localStorage.getItem("quizDone")){
   alert("You have already completed the quiz.");
   location.reload();
 }
 
-/* ===== 60 QUESTIONS (hard > soft) ===== */
+// ===== 60 QUESTIONS (HARD 45 + SOFT 15) =====
 const questions=[
-/* HARD 45 */
 {q:"Who prophesied the 70 weeks?",o:["Isaiah","Daniel","Ezekiel"],a:1,w:2},
 {q:"Which king saw the handwriting on the wall?",o:["Nebuchadnezzar","Belshazzar","Darius"],a:1,w:2},
 {q:"Who replaced Judas Iscariot?",o:["Barnabas","Matthias","Silas"],a:1,w:2},
@@ -162,17 +177,17 @@ const questions=[
 {q:"Which book comes after Psalms?",o:["Proverbs","Job","Ecclesiastes"],a:0,w:1}
 ];
 
-/* ===== QUIZ LOGIC ===== */
+// ===== QUIZ LOGIC =====
 let idx=0,score=0,timeSec=1200,timerInt,quizActive=false,cheatDetected=false;
 
 window.startQuiz=function(){
   if(!name.value||!gender.value||!dept.value||!photo.files.length){
-    alert("Fill all fields");return;
+    alert("Fill all fields"); return;
   }
 
   // Resize photo if too big
   resizePhoto(photo.files[0], 1024, 1024, (resizedBlob)=>{
-    photo._resized = resizedBlob; // attach resized blob to input
+    photo._resized = resizedBlob;
     formBox.classList.add("hidden");
     quizBox.classList.remove("hidden");
     quizActive=true;
@@ -181,50 +196,47 @@ window.startQuiz=function(){
   });
 }
 
-/* PHOTO RESIZE FUNCTION */
+// ===== PHOTO RESIZE =====
 function resizePhoto(file,maxWidth,maxHeight,callback){
   const reader = new FileReader();
-  reader.onload = function(e){
-    const img = new Image();
-    img.onload = function(){
-      let w = img.width;
-      let h = img.height;
-      const ratio = Math.min(maxWidth/w, maxHeight/h, 1);
-      w = w*ratio; h = h*ratio;
-      const canvas = document.createElement("canvas");
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext("2d");
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      let w=img.width, h=img.height;
+      const ratio=Math.min(maxWidth/w, maxHeight/h,1);
+      w=w*ratio; h=h*ratio;
+      const canvas=document.createElement("canvas");
+      canvas.width=w; canvas.height=h;
+      const ctx=canvas.getContext("2d");
       ctx.drawImage(img,0,0,w,h);
       canvas.toBlob(callback,"image/jpeg",0.8);
     }
-    img.src = e.target.result;
+    img.src=e.target.result;
   }
   reader.readAsDataURL(file);
 }
 
-/* TIMER */
+// ===== TIMER =====
 function startTimer(){
   timerInt=setInterval(()=>{
     timeSec--;
     let m=Math.floor(timeSec/60),s=timeSec%60;
     timer.textContent=`Time left: ${m}:${s<10?'0':''}${s}`;
-    if(timeSec<=0){submit();}
+    if(timeSec<=0) submit();
   },1000);
 }
 
-/* SHOW QUESTION */
+// ===== SHOW QUESTION =====
 function showQuestion(){
   let q=questions[idx];
   qText.textContent=(idx+1)+". "+q.q;
   opts.innerHTML="";
   q.o.forEach((t,i)=>{
-    opts.innerHTML+=`<div class="option">
-      <label><input type="radio" name="opt" value="${i}"> ${t}</label>
-    </div>`;
+    opts.innerHTML+=`<div class="option"><label><input type="radio" name="opt" value="${i}"> ${t}</label></div>`;
   });
 }
 
-/* NEXT */
+// ===== NEXT =====
 function next(){
   let s=document.querySelector("input[name=opt]:checked");
   if(!s){alert("Select an answer");return;}
@@ -234,7 +246,7 @@ function next(){
   else showQuestion();
 }
 
-/* SUBMIT */
+// ===== SUBMIT =====
 function submit(){
   clearInterval(timerInt);
   quizActive=false;
@@ -242,8 +254,8 @@ function submit(){
   quizBox.classList.add("hidden");
   doneBox.classList.remove("hidden");
 
-  const fd = new FormData();
-  fd.append("photo", photo._resized || photo.files[0]);
+  const fd=new FormData();
+  fd.append("photo",photo._resized||photo.files[0]);
   fd.append("caption",
 `📖 Bible Quiz
 👤 ${name.value}
@@ -254,13 +266,15 @@ function submit(){
   fetch("/api/send",{method:"POST",body:fd});
 }
 
-/* FRIENDLY ANTI-CHEAT */
+// ===== FRIENDLY ANTI-CHEAT =====
 document.addEventListener("visibilitychange",()=>{
   if(quizActive && document.hidden && !cheatDetected){
     cheatDetected=true;
     alert("⚠️ You switched tabs. Score may be reduced by 2 points.");
     score=Math.max(score-2,0);
   }
+});
+
 });
 </script>
 </body>
