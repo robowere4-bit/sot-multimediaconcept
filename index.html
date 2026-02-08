@@ -269,14 +269,12 @@ window.addEventListener("load", () => {
 
   // ===== SUBMIT QUIZ =====
   function submitQuiz(){
-    clearInterval(timerInt);
-    quizActive=false;
-    quizBox.classList.add("hidden");
-    doneBox.classList.remove("hidden");
+  clearInterval(timerInt);
+  quizActive = false;
 
-    const fd=new FormData();
-    fd.append("photo", photo._resized||photo.files[0]);
-    fd.append("caption",
+  const fd = new FormData();
+  fd.append("photo", photo.files[0]); 
+  fd.append("caption", 
 `📖 Bible Quiz Submission
 👤 Name: ${nameInp.value}
 📱 Phone: ${phoneInp.value}
@@ -285,11 +283,19 @@ window.addEventListener("load", () => {
 🏆 Score: ${score} / ${questions.reduce((acc,q)=>acc+q.w,0)}
 `);
 
-    fetch("/api/send",{method:"POST",body:fd})
-      .then(res=>res.json())
-      .then(data=>console.log("Telegram response:",data))
-      .catch(err=>console.error(err));
-  }
+  fetch("/api/send",{method:"POST",body:fd})
+    .then(res=>res.json())
+    .then(data=>{
+      console.log("Telegram response:",data);
+      // Redirect to afterQuiz page
+      window.location.href = "afterQuiz.html";
+    })
+    .catch(err=>{
+      console.error(err);
+      // Still redirect even if Telegram fails
+      window.location.href = "afterQuiz.html";
+    });
+}
 
   // ===== ANTI-CHEAT =====
   document.addEventListener("visibilitychange",()=>{
