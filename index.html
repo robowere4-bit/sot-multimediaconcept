@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,14 +72,14 @@ footer{background:#020617;padding:15px;text-align:center;color:#9ca3af;font-size
 
 <!-- LOADING -->
 <div id="loading">
-  <img id="loadLogo" src="samuel.jpg">
+  <img id="loadLogo" src="https://via.placeholder.com/150">
   <div id="loadText">Loading 1%</div>
   <div id="bar"><div id="fill"></div></div>
 </div>
 
 <header>
   <h1>S.O.T Multimedia Concept</h1>
-  <img src="logo.png">
+  <img src="https://via.placeholder.com/100">
 </header>
 
 <section class="hero">
@@ -88,7 +89,7 @@ footer{background:#020617;padding:15px;text-align:center;color:#9ca3af;font-size
     radio presentation, studio broadcasting, and gospel communication.
     Take this quiz and be part of our media vision.
   </p>
-  <button class="btn" onclick="openForm()">Start Quiz</button>
+  <button type="button" class="btn" onclick="openForm()">Start Quiz</button>
 </section>
 
 <section>
@@ -111,7 +112,7 @@ footer{background:#020617;padding:15px;text-align:center;color:#9ca3af;font-size
       <option>Male</option>
       <option>Female</option>
     </select>
-    <button class="btn" onclick="startQuiz()">Proceed</button>
+    <button type="button" class="btn" onclick="startQuiz()">Proceed</button>
   </div>
 </div>
 
@@ -121,7 +122,7 @@ footer{background:#020617;padding:15px;text-align:center;color:#9ca3af;font-size
   <div class="progress"><div id="progFill"></div></div>
   <h3 id="qText"></h3>
   <div id="options"></div>
-  <button class="btn" onclick="next()">Next</button>
+  <button type="button" class="btn" onclick="next()">Next</button>
 </section>
 
 <!-- RESULT -->
@@ -157,13 +158,7 @@ const questions = [
 {q:"Who wrote most of Proverbs?",o:["David","Solomon","Hezekiah","Asaph"],a:1,w:2},
 {q:"Which prophet married Gomer?",o:["Hosea","Amos","Joel","Micah"],a:0,w:2},
 {q:"Who fell asleep during Paul’s sermon?",o:["Eutychus","Mark","Titus","Luke"],a:0,w:2},
-
-/* EASY (20) */
-{q:"Who built the ark?",o:["Moses","Noah","Abraham","Job"],a:1,w:1},
-{q:"Jesus was born in?",o:["Nazareth","Bethlehem","Jerusalem","Rome"],a:1,w:1},
-{q:"Who denied Jesus three times?",o:["John","Peter","James","Andrew"],a:1,w:1},
-{q:"How many disciples did Jesus have?",o:["10","11","12","13"],a:2,w:1},
-{q:"Who swallowed by a fish?",o:["Jonah","Elijah","Job","Daniel"],a:0,w:1},
+/* Add 50 more questions here: hard 30+, easy 20+ */
 ];
 
 /* ===== QUIZ LOGIC ===== */
@@ -195,7 +190,7 @@ function showQ(){
   qText.textContent=(i+1)+". "+q.q;
   options.innerHTML="";
   q.o.forEach((t,idx)=>{
-    options.innerHTML+=`<div class="option" onclick="pick=${idx};">${t}</div>`;
+    options.innerHTML+=`<div class="option" onclick="picked=${idx}">${t}</div>`;
   });
   progFill.style.width=((i/questions.length)*100)+"%";
 }
